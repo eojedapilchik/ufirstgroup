@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
+
+    
+    <title>Frontend - Http Request Stats</title>
+  </head>
+  <body>
+    <!-- HEADER SECTION -->
+    <header>
+      <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About</h4>
+              <p class="text-muted">Designed and Developed by Alcides Ojeda. <br>Backend and CRM specialist 
+                <br>Front-End: Javascript, CSS, HTML, Bootstrap, Chart.js
+                <br>Back-End: PHP
+              </p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li><a href="https://twitter.com/AlcidesOP" class="text-white">Follow on Twitter</a></li>
+                <li><a href="https://www.upwork.com/freelancers/alcidesojeda" class="text-white">Contact on Upwork</a></li>
+                <li><a href="mailto:eojedapilchik@gmail.com" class="text-white">Email me</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <strong>Analytics Task</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+    <!-- END OF HEADER SECTION -->
+
+    <!-- SECTION HIGHLIGHTED -->
+    <section class="py-5 text-center container">
+      <div class="row py-lg-5">
+        <div class="col-lg-6 col-md-8 mx-auto">
+           <img src="https://www.ufirstgroup.com/frontend/assets/img/brand/header-brand.svg" alt="UFirst Group Logo" style="width: 30px;">
+          <h1 class="fw-light">HTTP Requests Analytics Tasks</h1>
+          <p class="lead text-muted">Analytics of HTTP requests to the EPA WWW server located at
+Research Triangle Park, NC. Information collected from 23:53:25 EDT on Tuesday, August 29 1995 through 23:53:07 on
+Wednesday, August 30 1995, a total of 24 hours</p>
+          <p><strong>Data collected by Laura Bottomley (laurab@ee.duke.edu) of Duke University.</strong></p>
+          <p>
+            <a href="./createJSON.php" class="btn btn-primary my-2">Proccess File - Backend</a>
+            <a href="./data_json.json" class="btn btn-secondary my-2">Open JSON File</a>
+          </p>
+        </div>
+      </div>
+    </section>
+    <!-- END OF HIGHLIGHTED -->
+
+    <!-- SECTION CHARTS -->
+    <section class="bg-light">
+      <div class="container py-4">
+
+        <div class="row">
+          <div class="col-12">
+          <div class="card shadow-sm">
+              <div class="card-header">Requests per Minute
+              </div>
+              <div class="card-body">
+                <div id="loader"></div>
+                <canvas id="requestPerMin" class="chartjs-render-monitor">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row row-cols-1 row-cols-sm-2">
+          
+          <div class="col">
+              <div class="card shadow-sm">
+                <div class="card-header">Distribution of Http Methods</div>
+                <div class="card-body">
+                  <div id="loader"></div>
+                  <canvas id="respCodeChart" class="chartjs-render-monitor"></canvas>
+                </div>
+              </div>
+          </div>
+    
+          <div class="col">
+            <div class="card shadow-sm">
+              <div class="card-header">Histogram Requests code 200 and size &lt; 1000 Bytes
+              </div>
+              <div class="card-body">
+                <div id="loader"></div>
+                <canvas
+                  id="histogram"
+                  class="chartjs-render-monitor"
+                ></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card shadow-sm">
+              <div class="card-header">Distribution of Response codes
+              </div>
+              <div class="card-body">
+                <div id="loader"></div>
+                <canvas
+                  id="httpMethodChart"
+                  class="chartjs-render-monitor"
+                ></canvas>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="card information">
+              <div class="card-header">Average Requests Per Minute
+              </div>
+              <div class="card-body">
+                <h3 class="card-title"> <span id="average_request"></span></h3> 
+                <p>requests/minute</p>
+        
+                <br>
+                <h6 class="card-subtitle mb-2 text-muted">Average Requests Per Minute</h6>
+                <p class="card-text">This is the total of request divided by the total numbers of minutes during the log period</p>
+                
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+    <!-- END OF CHARTS SECTION -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+      crossorigin="anonymous"
+    >
+    </script>
+    <!-- Configuration variables -->
+    <script src="js/config_frontend.js"></script>
+    <!-- Main JS -->
+    <script src="js/script.js"></script>
+  </body>
+</html>
