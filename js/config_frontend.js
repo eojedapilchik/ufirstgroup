@@ -1,4 +1,4 @@
-const file = window.location.origin + "/data_json.json";
+const file = "/data_json.json";
 const year = 1995; //year of the data
 const month = 7; // month of the data
 const partitions = 20; // the number of partitions/beans for the graph of the distribution of response_size
@@ -16,4 +16,3 @@ const defaultColors = [
   "#ff618f",
   "#ff005e",
 ];
-console.log(window.location.pathname);
