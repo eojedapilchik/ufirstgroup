@@ -130,9 +130,9 @@ function getTotalConnectionsPerMinute(connections) {
 }
 
 /**
- *
+ * Filters array of objects based on responde_code and document_size
  * @param {*} connections
- * @returns
+ * @returns filtered array according to conditions
  */
 function filterByAnswerAndSize(connections) {
   let filtered = connections
@@ -165,13 +165,13 @@ function createHistogramData(raw_data) {
 }
 
 /**
- *
- * @param {Array} data
- * @param {Array String} labels
+ * Creates a Chart
+ * @param {Array} data to be used
+ * @param {Array String} labels for axis
  * @param {DOM element} domChart the HTML canvas element where the charts if going to be rendered
- * @param {String} label
- * @param {Array String} colors
- * @param {String} type
+ * @param {String} label for data series
+ * @param {Array String} colors for background colors of the bars,pie sectionsm...
+ * @param {String} type of chart
  * @returns chart.js object
  */
 function buildGraph(
