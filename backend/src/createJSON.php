@@ -14,8 +14,8 @@ $contadorInvalid=0;
 function main(){
     require "utils.php";
     $ini = parse_ini_file("../".'config_backend.ini');
-    $input_filename= dirname(dirname(__FILE__))."\\".$ini['input_filename'];
-    $output_filename = dirname(dirname(__FILE__))."\\".$ini['output_filename'];
+    $input_filename= dirname(dirname(__FILE__))."/".$ini['input_filename'];
+    $output_filename = dirname(dirname(__FILE__))."/".$ini['output_filename'];
     $json_list=[];
     $input_file = fopen($input_filename,"r");
     if($input_file){
