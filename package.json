@@ -1,0 +1,27 @@
+{
+  "name": "final-test",
+  "version": "1.0.0",
+  "description": "[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/eojedapilchik/ufirstgroup)",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eojedapilchik/ufirstgroup.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eojedapilchik/ufirstgroup/issues"
+  },
+  "homepage": "https://github.com/eojedapilchik/ufirstgroup#readme",
+  "devDependencies": {
+    "jest": "^27.2.1",
+    "puppeteer": "^10.4.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
