@@ -1,49 +1,40 @@
 "use strict";
-const respCodeChart = document.getElementById("respCodeChart").getContext("2d");
-const reqMinuteChart = document
-  .getElementById("requestPerMin")
-  .getContext("2d");
-const histogramChart = document.getElementById("histogram").getContext("2d");
-const resquestsInfo = document.getElementById("average_request");
-const httpMethodChart = document
-  .getElementById("httpMethodChart")
-  .getContext("2d");
 
 /**
  * Fetches json file and parses it to JS object array
  * @param {*} file
  */
-function getJSONData(file) {
-  fetch(file)
-    .then((resp) => {
-      //console.log(resp);
-      if (!resp.ok) throw new Error(`Data is not available ${resp.status}`);
-      return resp.json();
-    })
-    .then((connections) => {
-      hideLoader();
-      buildGraphs(connections);
-    })
-    .catch((e) => console.log(`Problem fetching data: ${e.message}`));
-}
+const getJSONData = async (file) => {
+  let connections = undefined;
+  try {
+    const resp = await fetch(file);
+    connections = await resp.json();
+    hideLoader();
+    return connections;
+  } catch (error) {
+    console.log(`Problem fetching data: ${error}`);
+    return null;
+  }
+};
 
 /**
  *Prepares data for all charts and call Charting function
  * @param {*} connections
  */
 function buildGraphs(connections) {
-  const responseDist = groupBy(connections, "response_code");
-  const requestDist = groupBy(connections, "request", "method");
-  const requestPerMin = groupByMinute(connections);
-  const filteredData = filterByAnswerAndSize(connections);
-  const histogramData = createHistogramData(filteredData);
+  const responseDist = groupBy(connections, "response_code"),
+    requestDist = groupBy(connections, "request", "method"),
+    requestPerMin = groupByMinute(connections),
+    filteredData = filterByAnswerAndSize(connections),
+    histogramData = createHistogramData(filteredData);
+
   resquestsInfo.innerText =
     getTotalConnectionsPerMinute(connections).toFixed(2);
   buildGraph(
     Object.values(histogramData),
     Object.keys(histogramData),
     histogramChart,
-    "Size in Bytes",
+    "Count By Range",
     undefined,
     "bar"
   );
@@ -71,97 +62,6 @@ function buildGraphs(connections) {
     undefined,
     "bar"
   );
-}
-
-/**
- * Groupbs by a List of Objexts by keys
- * @param {*} array
- * @param {*} key1
- * @param {*} key2
- * @returns
- */
-function groupBy(array, key1, key2 = null) {
-  let grouped_array = array.reduce(function (x, conn) {
-    if (key2) {
-      x[conn[key1][key2]] = x[conn[key1][key2]] + 1 || 1;
-    } else {
-      x[conn[key1]] = x[conn[key1]] + 1 || 1;
-    }
-
-    return x;
-  }, {});
-  return grouped_array;
-}
-
-/**
- * Groups a list of request objects by minutes
- * @param {*} array
- * @returns
- */
-function groupByMinute(array) {
-  let grouped_array = array.reduce(function (x, conn) {
-    const key = `${conn.datetime.day}-${conn.datetime.hour}h-${conn.datetime.minute}m`;
-    x[key] = x[key] + 1 || 1;
-    return x;
-  }, {});
-  return grouped_array;
-}
-
-/**
- * Calculates de Total connectios Per minute
- * @param {*} connections
- * @returns
- */
-function getTotalConnectionsPerMinute(connections) {
-  let dates = connections
-    .map(function (conn) {
-      return new Date(
-        year,
-        month,
-        conn.datetime.day,
-        conn.datetime.hour,
-        conn.datetime.minute,
-        conn.datetime.second
-      );
-    })
-    .sort((a, b) => a - b);
-  const minutes = (dates[dates.length - 1] - dates[0]) / 1000 / 60; //Milliseconds/Seconds/Minutes
-  return connections.length / minutes;
-}
-
-/**
- * Filters array of objects based on responde_code and document_size
- * @param {*} connections
- * @returns filtered array according to conditions
- */
-function filterByAnswerAndSize(connections) {
-  let filtered = connections
-    .filter(
-      (conn) =>
-        parseInt(conn.response_code) === 200 &&
-        parseInt(conn.document_size) <= max_bytes_size
-    )
-    .map((conn) => parseInt(conn.document_size))
-    .sort((a, b) => a - b);
-  return filtered;
-}
-
-/**
- * Histogram data for  document_size
- * @param {*} raw_data
- * @returns
- */
-function createHistogramData(raw_data) {
-  const data_beans = {};
-  for (let i = 0; i < partitions; i++) {
-    const min = i * bean_size;
-    const max = i * bean_size + bean_size;
-
-    data_beans[`${min} - ${max}`] = raw_data.filter(
-      (data) => data >= min && data < max
-    ).length;
-  }
-  return data_beans;
 }
 
 /**
@@ -203,32 +103,6 @@ function buildGraph(
 }
 
 /**
- * Generates and Array of random hex Colors
- * @param {integer} quantity of colors to generate
- * @return {Array string} hex colors
- */
-function getRandomColorsForGraph(quantity) {
-  const colors = [];
-  for (let i = 0; i < quantity; i++) {
-    colors.push(getRandomColorHex());
-  }
-  return colors;
-}
-
-/**
- * Creates one random color in hex format
- * @returns {String} color in hex format
- */
-function getRandomColorHex() {
-  var hex = "0123456789ABCDEF",
-    color = "#";
-  for (var i = 1; i <= 6; i++) {
-    color += hex[Math.floor(Math.random() * 16)];
-  }
-  return color;
-}
-
-/**
  * Hides Loaders animation
  */
 function hideLoader() {
@@ -239,4 +113,9 @@ function hideLoader() {
 /**
  * Main Entry Point to the JS
  */
-getJSONData(file);
+async function main() {
+  const connections = await getJSONData(file);
+  if (connections) buildGraphs(connections);
+}
+
+main();

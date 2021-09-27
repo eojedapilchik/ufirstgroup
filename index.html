@@ -68,8 +68,8 @@ Research Triangle Park, NC. Information collected from 23:53:25 EDT on Tuesday, 
 Wednesday, August 30 1995, a total of 24 hours</p>
           <p><strong>Data collected by Laura Bottomley (laurab@ee.duke.edu) of Duke University.</strong></p>
           <p>
-            <a href="./createJSON.php" class="btn btn-primary my-2">Process File - Backend</a>
-            <a href="./data_json.json" class="btn btn-secondary my-2">Open JSON File</a>
+            <a href="./backend/src/createJSON.php" class="btn btn-primary my-2">Process File - Backend</a>
+            <a href="./backend/data_json.json" class="btn btn-secondary my-2">Open JSON File</a>
           </p>
         </div>
       </div>
@@ -98,7 +98,7 @@ Wednesday, August 30 1995, a total of 24 hours</p>
           
           <div class="col">
               <div class="card shadow-sm">
-                <div class="card-header">Distribution of Http Methods</div>
+                <div class="card-header">Distribution of Response codes</div>
                 <div class="card-body">
                   <div id="loader"></div>
                   <canvas id="respCodeChart" class="chartjs-render-monitor"></canvas>
@@ -122,7 +122,7 @@ Wednesday, August 30 1995, a total of 24 hours</p>
 
           <div class="col">
             <div class="card shadow-sm">
-              <div class="card-header">Distribution of Response codes
+              <div class="card-header">Distribution of Http Methods
               </div>
               <div class="card-body">
                 <div id="loader"></div>
@@ -162,8 +162,9 @@ Wednesday, August 30 1995, a total of 24 hours</p>
     >
     </script>
     <!-- Configuration variables -->
-    <script src="config_frontend.js"></script>
+    <script src="js/config_frontend.js"></script>
     <!-- Main JS -->
+    <script src="js/utils.js"></script>
     <script src="js/script.js"></script>
   </body>
 </html>
